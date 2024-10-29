@@ -34,5 +34,9 @@
         <members>Schedule_Batch</members>
         <name>FlexiPage</name>
     </types>
+    <types>
+        <members>Generic_Scheduler_PS</members>
+        <name>PermissionSet</name>
+    </types>
     <version>59.0</version>
 </Package>

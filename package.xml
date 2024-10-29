@@ -38,5 +38,9 @@
         <members>Generic_Scheduler_PS</members>
         <name>PermissionSet</name>
     </types>
+    <types>
+        <members>GenericBatchAction__mdt-Generic Batch Action Layout</members>
+        <name>Layout</name>
+    </types>
     <version>59.0</version>
 </Package>

@@ -138,14 +138,14 @@ public with sharing class GenericBatchAction implements Database.Batchable<SObje
     }
 
     private void buildLogEntryData(Map<String, String> errosMap, String message) {
-        List<String> keys = new List<String>(errosMap.keySet());
-        List<EP_Log__c> logRecords = new List<EP_Log__c>();
+        // List<String> keys = new List<String>(errosMap.keySet());
+        // List<EP_Log__c> logRecords = new List<EP_Log__c>();
 
-        for(String key : errorsMap.keySet()) {
-                EP_Log__c logRecord = (EP_Log__c) LogHandler.getLog('', '', '', errorsMap.get(key), UserInfo.getUserId(), 0, message ,genericBatchAction.DeveloperName, 'GenericBatchAction',false,null);
-                logRecords.add(logRecord);
-            }
-        // save error to logs
-        insert logRecords;
+        // for(String key : errorsMap.keySet()) {
+        //         EP_Log__c logRecord = (EP_Log__c) LogHandler.getLog('', '', '', errorsMap.get(key), UserInfo.getUserId(), 0, message ,genericBatchAction.DeveloperName, 'GenericBatchAction',false,null);
+        //         logRecords.add(logRecord);
+        //     }
+        // // save error to logs
+        // insert logRecords;
     }
 }

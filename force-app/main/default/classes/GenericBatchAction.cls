@@ -137,7 +137,7 @@ public with sharing class GenericBatchAction implements Database.Batchable<SObje
         }
     }
 
-    private void buildLogEntryData(Map<String, String> errosMap, String message) {
+    private void buildLogEntryData(Map<String, String> errorsMap, String message) {
         // List<String> keys = new List<String>(errosMap.keySet());
         // List<EP_Log__c> logRecords = new List<EP_Log__c>();
 
@@ -147,5 +147,31 @@ public with sharing class GenericBatchAction implements Database.Batchable<SObje
         //     }
         // // save error to logs
         // insert logRecords;
+
+
+        // Messaging.EmailFileAttachment failedCSVAttachment = new Messaging.EmailFileAttachment();
+        // failedCSVAttachment.setFileName('Failed Records.csv');
+        // failedCSVAttachment.setBody(blob.valueOf(getFailedCSV(errorsMap)));
+
+        // Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
+        // email.setToAddresses(new String[] { UserInfo.getUserEmail()}); 
+
+        // email.setSubject('Generic Batch Processing Results');
+        // email.setPlainTextBody('Here is the report of the Generic batch that you have run.');
+        // email.setFileAttachments(new Messaging.EmailFileAttachment[]{failedCSVAttachment});
+
+        // Messaging.sendEmail(new Messaging.SingleEmailMessage[] {email});
+    }
+
+    public string getFailedCSV(Map<String, String> errorsMap){
+        // String csv = 'Id,Error' + '\n';
+        // for(String errorKey : errorsMap.keySet()){
+    
+        //     String recordId = errorKey;
+        //     String errorMessage = errorsMap.get(errorKey);
+    
+        //     csv += recordId.escapeCsv() + ',' + errorMessage.escapeCsv() + '\n';
+        // }
+        // return csv;
     }
 }

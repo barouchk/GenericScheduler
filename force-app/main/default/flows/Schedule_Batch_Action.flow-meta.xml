@@ -29,6 +29,12 @@
                 <elementReference>Cron_Expression</elementReference>
             </value>
         </inputParameters>
+        <inputParameters>
+            <name>runNow</name>
+            <value>
+                <elementReference>Run_Now</elementReference>
+            </value>
+        </inputParameters>
         <nameSegment>ScheduleBatchAction</nameSegment>
         <outputParameters>
             <assignToReference>errorMessage</assignToReference>
@@ -291,6 +297,14 @@
             <regionContainerType>SectionWithoutHeader</regionContainerType>
         </fields>
         <fields>
+            <name>Run_Now</name>
+            <dataType>Boolean</dataType>
+            <fieldText>Run Now</fieldText>
+            <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
             <name>Cron_Expression</name>
             <dataType>String</dataType>
             <fieldText>Cron Expression</fieldText>
@@ -298,6 +312,16 @@
             <helpText>&lt;p&gt;Example : 0 11 15 6 JUN ? 2024&lt;/p&gt;</helpText>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>Run_Now</leftValueReference>
+                    <operator>NotEqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <nextOrFinishButtonLabel>Schedule</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>

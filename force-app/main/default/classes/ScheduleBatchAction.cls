@@ -1,8 +1,4 @@
 global with sharing class ScheduleBatchAction {
-
-    public final static String BATCH_DELETE_ACCOUNT_DEVNAME = 'DeleteAccount';
-    public final static String BATCH_DELETE_ACCOUNT_LABEL = 'Action Label Test';
-
     @InvocableMethod(label = 'Schedule Batch Action')
     global static List<actionOutput> ScheduleBatchAction(List<actionInput> input) {
         return new List<actionOutput>{createdScheduledJob(input[0])};
@@ -13,21 +9,39 @@ global with sharing class ScheduleBatchAction {
          try{
             GenericBatchAction m = new GenericBatchAction();
             if(Test.isRunningTest()) {
-                m.genericBatchActions.put(BATCH_DELETE_ACCOUNT_DEVNAME, genericBatchActionAccountBuilder(BATCH_DELETE_ACCOUNT_DEVNAME, 'Delete', null, 10));
             }
-            String cron = input.cron;
+
+            String cron = input.runNow ? getCronExpressionOfNow() :  input.cron;
             datetime currentDateTime = datetime.now();
             System.schedule(input.actionLabel + ' - ' + input.actionDevName  , cron , m );            
             }catch(Exception e){
                 success = false;
                 errorMessage =  e.getMessage();
-                // EP_Log__c log = (EP_Log__c) LogHandler.getLog('', '', '', '', UserInfo.getUserId(), 0, e.getMessage() ,'', 'ScheduleBatchAction',false,null);                                                     
-                // insert log;
         }
         return new actionOutput(success, errorMessage);       
     }
+
+    private static String getCronExpressionOfNow() {
+        Datetime now = System.now().addMinutes(1);
+        // Extract the components of the current date and time
+        Integer second = now.second();
+        Integer minute = now.minute();
+        Integer hour = now.hour();
+        Integer day = now.day();
+        Integer month = now.month();
+        Integer year = now.year();
+
+        // Convert the month number to the three-letter abbreviation
+        String monthAbbreviation = now.format('MMM').toUpperCase();
+
+        // Construct the cron expression
+        String cronExpression = '0 ' + minute + ' ' + hour + ' ' + day + ' ' + monthAbbreviation + ' ? ' + year;
+        return cronExpression;
+
+    }
     global class actionInput
-    {
+    {   
+        @InvocableVariable(label = 'Run Now') global Boolean runNow;
         @InvocableVariable(label = 'Cron') global String cron;
         @InvocableVariable(label = 'Batch Action DeveloperName') global String actionDevName;
         @InvocableVariable(label = 'Batch Action Label') global String actionLabel;
@@ -47,15 +61,5 @@ global with sharing class ScheduleBatchAction {
             this.errorMessage = errorMessage;
         }
         public actionOutput(){}
-    }
-
-    public static GenericBatchAction__mdt genericBatchActionAccountBuilder(String actionName, String operation, String paramsJson, Integer recordsQuantity) {
-        return new GenericBatchAction__mdt(
-                DeveloperName = actionName,
-                Query__c = 'SELECT Id FROM Account ALL ROWS',
-                Params__c = paramsJson,
-                Operation__c = operation,
-                Chunk_Size__c = recordsQuantity
-        );
     }
 }
